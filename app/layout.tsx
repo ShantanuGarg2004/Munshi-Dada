@@ -9,23 +9,9 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: 'Munshi Dada - Stop Losing Customers On WhatsApp',
   description: 'AI-assistant that answers customers and employees automatically. Close deals on WhatsApp with intelligent automation.',
-  generator: 'v0.app',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/Munshi_Icon.png',
+    apple: '/Munshi_Icon.png',
   },
 }
 
