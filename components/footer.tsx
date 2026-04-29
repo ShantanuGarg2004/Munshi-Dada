@@ -11,9 +11,23 @@ if (typeof window !== "undefined") {
 }
 
 const footerLinks = {
-  Sitemap: ["Features", "How It Works", "Pricing", "FAQ"],
-  Industries: ["Factories & Warehouses", "Field & Construction", "Retail", "Service Businesses"],
-  Solutions: ["Customer Support", "HR Management", "Operations", "Finance"],
+  Sitemap: [
+    { label: "Features", href: "#features" },
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Use Cases", href: "#use-cases" },
+    { label: "Demo Videos", href: "#demo-videos" },
+  ],
+  Industries: [
+    { label: "Factories & Warehouses", href: "#" },
+    { label: "Field & Construction", href: "#" },
+    { label: "Retail", href: "#" },
+    { label: "Service Businesses", href: "#" },
+  ],
+  Legal: [
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Service", href: "#" },
+    { label: "Contact Us", href: "#" },
+  ],
 }
 
 export function Footer() {
@@ -28,14 +42,16 @@ export function Footer() {
   }, [])
 
   return (
-    <footer ref={footerRef} className="bg-[#0b1410] text-white py-16 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-10 mb-14">
-          <div className="footer-brand">
-            <Link href="/" className="inline-block mb-5">
+    <footer ref={footerRef} className="bg-[#0b1410] text-white py-12 sm:py-16 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+        {/* Top grid — brand full-width on mobile, then 4 cols on md */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 mb-10 sm:mb-14">
+          {/* Brand — spans 2 cols on mobile so it's full-width */}
+          <div className="footer-brand col-span-2 sm:col-span-2 md:col-span-1">
+            <Link href="/" className="inline-block mb-4 sm:mb-5">
               <Image src="/images/logo-full.png" alt="Munshee" width={140} height={34} className="h-8 w-auto" />
             </Link>
-            <p className="text-sm text-gray-500 leading-relaxed max-w-[200px] mb-6">
+            <p className="text-sm text-gray-500 leading-relaxed max-w-[260px] sm:max-w-[200px] mb-5 sm:mb-6">
               Run your daily business operations on WhatsApp.
             </p>
             <div className="flex gap-2.5">
@@ -52,14 +68,15 @@ export function Footer() {
             </div>
           </div>
 
+          {/* Link columns */}
           {Object.entries(footerLinks).map(([title, links]) => (
             <div key={title} className="footer-col">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-5">{title}</h3>
-              <ul className="space-y-3">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4 sm:mb-5">{title}</h3>
+              <ul className="space-y-2.5 sm:space-y-3">
                 {links.map((link) => (
-                  <li key={link}>
-                    <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors duration-200 hover:translate-x-0.5 inline-block">
-                      {link}
+                  <li key={link.label}>
+                    <Link href={link.href} className="text-sm text-gray-400 hover:text-white transition-colors duration-200 hover:translate-x-0.5 inline-block">
+                      {link.label}
                     </Link>
                   </li>
                 ))}
@@ -68,10 +85,10 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="border-t border-white/6 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-gray-600">© 2025 Munshee. All rights reserved.</p>
-          <div className="flex gap-6">
-            <Link href="#" className="text-sm text-gray-600 hover:text-gray-400 transition-colors duration-200">Privacy Policy</Link>
+        <div className="border-t border-white/6 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
+          <p className="text-sm text-gray-600 text-center sm:text-left">© 2025 Munshee. All rights reserved.</p>
+          <div className="flex gap-4 sm:gap-6">
+            <Link href="/privacy" className="text-sm text-gray-600 hover:text-gray-400 transition-colors duration-200">Privacy Policy</Link>
             <Link href="#" className="text-sm text-gray-600 hover:text-gray-400 transition-colors duration-200">Terms of Service</Link>
           </div>
         </div>

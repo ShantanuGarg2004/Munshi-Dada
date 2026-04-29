@@ -1,10 +1,11 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Check, ArrowRight, MessageCircle } from "lucide-react"
-import { useEffect, useRef } from "react"
+import { Check, ArrowRight, MessageCircle, Copy } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { GetAccessModal } from "@/components/get-access-modal"
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
@@ -25,6 +26,15 @@ const features = [
 
 export function GetStartedSection() {
   const sectionRef = useRef<HTMLElement>(null)
+  const [copied, setCopied] = useState(false)
+  const [accessModalOpen, setAccessModalOpen] = useState(false)
+
+  const handleContactUs = () => {
+    navigator.clipboard.writeText("9555105916").then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 3000)
+    })
+  }
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -37,64 +47,90 @@ export function GetStartedSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="py-24 bg-[#25D366] relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white/8 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[280px] h-[280px] bg-black/6 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
+    <>
+      <section ref={sectionRef} className="py-16 sm:py-24 bg-[#25D366] relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-white/8 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[200px] sm:w-[280px] h-[200px] sm:h-[280px] bg-black/6 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left */}
-          <div>
-            <div className="flex items-center gap-2 mb-5">
-              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                <MessageCircle className="w-4 h-4 text-white" />
+        <div className="relative max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-10 sm:gap-12 items-center">
+            {/* Left */}
+            <div>
+              <div className="flex items-center gap-2 mb-4 sm:mb-5">
+                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                  <MessageCircle className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-xs font-bold text-white/80 uppercase tracking-widest">Live Demos</span>
               </div>
-              <span className="text-xs font-bold text-white/80 uppercase tracking-widest">Live Demos</span>
-            </div>
-            <h2 className="gs-title text-3xl sm:text-4xl font-bold text-white mb-5 leading-tight">
-              The Best Way To Understand Munshee Is To Try It.
-            </h2>
-            <p className="gs-sub text-white/75 mb-8 text-base leading-relaxed">
-              No new app. No extra training. Just WhatsApp — the one your team already uses every day.
-            </p>
-            <div className="gs-checks flex flex-col gap-3 mb-8">
-              {checkItems.map((text, i) => (
-                <div key={i} className="gs-check flex items-center gap-3">
-                  <div className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Check className="w-3 h-3 text-white" />
+              <h2 className="gs-title text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-5 leading-tight">
+                The Best Way To Understand Munshee Is To Try It.
+              </h2>
+              <p className="gs-sub text-white/75 mb-6 sm:mb-8 text-sm sm:text-base leading-relaxed">
+                No new app. No extra training. Just WhatsApp — the one your team already uses every day.
+              </p>
+              <div className="gs-checks flex flex-col gap-2.5 sm:gap-3 mb-6 sm:mb-8">
+                {checkItems.map((text, i) => (
+                  <div key={i} className="gs-check flex items-center gap-3">
+                    <div className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check className="w-3 h-3 text-white" />
+                    </div>
+                    <span className="text-white font-medium text-sm">{text}</span>
                   </div>
-                  <span className="text-white font-medium text-sm">{text}</span>
+                ))}
+              </div>
+              <div className="gs-cta flex flex-wrap gap-3">
+                <Button
+                  onClick={() => setAccessModalOpen(true)}
+                  className="bg-white text-[#25D366] hover:bg-gray-50 rounded-full px-6 sm:px-7 py-5 sm:py-6 text-sm sm:text-[15px] font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg"
+                >
+                  Try It Now
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={handleContactUs}
+                  className="rounded-full px-6 sm:px-7 py-5 sm:py-6 text-sm sm:text-[15px] font-semibold border-white/30 text-white hover:bg-white/10 hover:border-white/50 transition-all duration-300 group bg-transparent flex items-center gap-2"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      Number Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4" />
+                      Contact Us
+                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </>
+                  )}
+                </Button>
+              </div>
+              {copied && (
+                <p className="mt-3 text-white/80 text-sm font-medium">
+                  📋 <span className="font-bold">9555105916</span> copied to clipboard!
+                </p>
+              )}
+            </div>
+
+            {/* Right - Features grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {features.map((text, i) => (
+                <div key={i} className="gs-check flex items-center gap-3 bg-white/12 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-3.5 sm:py-4">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                  </div>
+                  <span className="text-white text-sm font-semibold">{text}</span>
                 </div>
               ))}
-            </div>
-            <div className="gs-cta flex flex-wrap gap-3">
-              <Button className="bg-white text-[#25D366] hover:bg-gray-50 rounded-full px-7 py-6 text-[15px] font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg">
-                Try It Now
-              </Button>
-              <Button variant="outline" className="rounded-full px-7 py-6 text-[15px] font-semibold border-white/30 text-white hover:bg-white/10 hover:border-white/50 transition-all duration-300 group bg-transparent">
-                Contact Us
-                <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Button>
-            </div>
-          </div>
-
-          {/* Right - Features grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {features.map((text, i) => (
-              <div key={i} className="gs-check flex items-center gap-3 bg-white/12 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-4">
-                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Check className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-white text-sm font-semibold">{text}</span>
+              <div className="sm:col-span-2 bg-white/10 border border-white/15 rounded-xl px-5 py-4 mt-1">
+                <p className="text-white/70 text-xs text-center">See how it all works — and how businesses interact in the real way.</p>
               </div>
-            ))}
-            <div className="sm:col-span-2 bg-white/10 border border-white/15 rounded-xl px-5 py-4 mt-1">
-              <p className="text-white/70 text-xs text-center">See how it all works — and how businesses interact in the real way.</p>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <GetAccessModal open={accessModalOpen} onClose={() => setAccessModalOpen(false)} />
+    </>
   )
 }

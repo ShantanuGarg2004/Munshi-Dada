@@ -12,26 +12,22 @@ const steps = [
   {
     number: "1",
     title: "Set up your team and workflow",
-    description: "Add your staff, roles, daily tasks, reminders and reporting structure. Takes just a few minutes.",
-    emoji: "⚙️",
+    description: "Add your staff, roles, daily tasks, reminders and reporting structure. Takes just a few minutes."
   },
   {
     number: "2",
     title: "Staff respond on WhatsApp",
-    description: "Employees send attendance, updates, issue reports, expenses, stock entries or task completion directly on WhatsApp.",
-    emoji: "💬",
+    description: "Employees send attendance, updates, issue reports, expenses, stock entries or task completion directly on WhatsApp."
   },
   {
     number: "3",
     title: "Munshee follows up automatically",
-    description: "It reminds people, collects updates, records entries and escalates important issues when needed.",
-    emoji: "🤖",
+    description: "It reminds people, collects updates, records entries and escalates important issues when needed."
   },
   {
     number: "4",
     title: "Owner gets one clear daily summary",
-    description: "At the end of the day, you get a simple WhatsApp report with what happened, what is pending and what needs action.",
-    emoji: "📊",
+    description: "At the end of the day, you get a simple WhatsApp report with what happened, what is pending and what needs action."
   },
 ]
 
