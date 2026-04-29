@@ -62,7 +62,6 @@ export function HowItWorksSection() {
               <div className="w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center mx-auto mb-5 shadow-lg shadow-[#25D366]/25 transition-all duration-300 group-hover:scale-110 group-hover:shadow-[#25D366]/40">
                 <span className="text-white font-bold text-lg">{step.number}</span>
               </div>
-              <div className="text-2xl mb-3">{step.emoji}</div>
               <h3 className="font-bold text-gray-900 mb-3 text-sm leading-snug">{step.title}</h3>
               <p className="text-xs text-gray-400 leading-relaxed">{step.description}</p>
             </div>
