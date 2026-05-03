@@ -15,7 +15,7 @@ type SortField = "created_at" | "name" | "business_name"
 type SortDir = "asc" | "desc"
 
 interface Lead {
-  id: string
+  id: number
   name: string
   phone_number: string
   business_name: string
@@ -52,7 +52,7 @@ function StatusBadge({ status }: { status: LeadStatus }) {
 function StatusDropdown({ lead, adminKey, onChange }: {
   lead: Lead
   adminKey: string
-  onChange: (id: string, status: LeadStatus) => void
+  onChange: (id: number, status: LeadStatus) => void
 }) {
   const [open, setOpen] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -75,13 +75,23 @@ function StatusDropdown({ lead, adminKey, onChange }: {
   const select = async (status: LeadStatus) => {
     setOpen(false)
     setSaving(true)
-    await fetch("/api/leads", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
-      body: JSON.stringify({ id: lead.id, action: "status", status }),
-    })
-    onChange(lead.id, status)
-    setSaving(false)
+    try {
+      const res = await fetch("/api/leads", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
+        body: JSON.stringify({ id: lead.id, action: "status", status }),
+      })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        onChange(lead.id, status)
+      } else {
+        console.error("Status update failed:", data.error)
+      }
+    } catch (err) {
+      console.error("Status update error:", err)
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -123,7 +133,7 @@ function StatusDropdown({ lead, adminKey, onChange }: {
 function NotesCell({ lead, adminKey, onChange }: {
   lead: Lead
   adminKey: string
-  onChange: (id: string, notes: string) => void
+  onChange: (id: number, notes: string) => void
 }) {
   const [open, setOpen] = useState(false)
   const [draft, setDraft] = useState(lead.notes)
@@ -131,14 +141,24 @@ function NotesCell({ lead, adminKey, onChange }: {
 
   const save = async () => {
     setSaving(true)
-    await fetch("/api/leads", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
-      body: JSON.stringify({ id: lead.id, action: "notes", notes: draft }),
-    })
-    onChange(lead.id, draft)
-    setSaving(false)
-    setOpen(false)
+    try {
+      const res = await fetch("/api/leads", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
+        body: JSON.stringify({ id: lead.id, action: "notes", notes: draft }),
+      })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        onChange(lead.id, draft)
+        setOpen(false)
+      } else {
+        console.error("Notes update failed:", data.error)
+      }
+    } catch (err) {
+      console.error("Notes update error:", err)
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -202,11 +222,11 @@ export default function AdminPage() {
   const [adminKey, setAdminKey]         = useState("")
   const [leads, setLeads]               = useState<Lead[]>([])
   const [loading, setLoading]           = useState(false)
-  const [actionLoading, setActionLoading] = useState<string | null>(null)
+  const [actionLoading, setActionLoading] = useState<number | null>(null)
   const [error, setError]               = useState("")
   const [authed, setAuthed]             = useState(false)
   const [view, setView]                 = useState<View>("active")
-  const [confirmId, setConfirmId]       = useState<string | null>(null)
+  const [confirmId, setConfirmId] = useState<number | null>(null)
   const [search, setSearch]             = useState("")
   const [statusFilter, setStatusFilter] = useState<LeadStatus | "all">("all")
   const [sortField, setSortField]       = useState<SortField>("created_at")
@@ -235,7 +255,7 @@ export default function AdminPage() {
 
   // ── Mutations ──────────────────────────────────────────────────────────────
 
-  const patchLead = async (id: string, body: object) => {
+  const patchLead = async (id: number, body: object) => {
     await fetch("/api/leads", {
       method: "PATCH",
       headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
@@ -243,10 +263,10 @@ export default function AdminPage() {
     })
   }
 
-  const handleArchive   = async (id: string) => { setActionLoading(id); await patchLead(id, { action: "archive" });   setLeads(p => p.filter(l => l.id !== id)); setActionLoading(null) }
-  const handleUnarchive = async (id: string) => { setActionLoading(id); await patchLead(id, { action: "unarchive" }); setLeads(p => p.filter(l => l.id !== id)); setActionLoading(null) }
+  const handleArchive   = async (id: number) => { setActionLoading(id); await patchLead(id, { action: "archive" });   setLeads(p => p.filter(l => l.id !== id)); setActionLoading(null) }
+  const handleUnarchive = async (id: number) => { setActionLoading(id); await patchLead(id, { action: "unarchive" }); setLeads(p => p.filter(l => l.id !== id)); setActionLoading(null) }
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     setConfirmId(null)
     setActionLoading(id)
     await fetch("/api/leads", {
@@ -258,10 +278,10 @@ export default function AdminPage() {
     setActionLoading(null)
   }
 
-  const handleStatusChange = (id: string, status: LeadStatus) =>
+  const handleStatusChange = (id: number, status: LeadStatus) =>
     setLeads(p => p.map(l => l.id === id ? { ...l, status } : l))
 
-  const handleNotesChange = (id: string, notes: string) =>
+  const handleNotesChange = (id: number, notes: string) =>
     setLeads(p => p.map(l => l.id === id ? { ...l, notes } : l))
 
   // ── Stats ──────────────────────────────────────────────────────────────────

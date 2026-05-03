@@ -1,4 +1,4 @@
-import { createClient, InValue } from "@libsql/client"
+import { createClient } from "@libsql/client"
 
 const db = createClient({
   url: process.env.TURSO_DATABASE_URL!,
@@ -14,18 +14,25 @@ const initDb = async () => {
       business_name TEXT NOT NULL,
       description   TEXT NOT NULL,
       archived      INTEGER NOT NULL DEFAULT 0,
+      status        TEXT NOT NULL DEFAULT 'new',
+      notes         TEXT NOT NULL DEFAULT '',
       created_at    DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `)
-  // Add archived column if upgrading from old schema
-  try {
-    await db.execute(`ALTER TABLE leads ADD COLUMN archived INTEGER NOT NULL DEFAULT 0`)
-  } catch {
-    // Column already exists — safe to ignore
+  // Safe migrations for existing deployments
+  const migrations = [
+    `ALTER TABLE leads ADD COLUMN archived INTEGER NOT NULL DEFAULT 0`,
+    `ALTER TABLE leads ADD COLUMN status TEXT NOT NULL DEFAULT 'new'`,
+    `ALTER TABLE leads ADD COLUMN notes TEXT NOT NULL DEFAULT ''`,
+  ]
+  for (const sql of migrations) {
+    try { await db.execute(sql) } catch { /* column exists, skip */ }
   }
 }
 
 initDb()
+
+export type LeadStatus = "new" | "contacted" | "interested" | "converted" | "not_interested"
 
 interface LeadInput {
   name: string
@@ -37,54 +44,46 @@ interface LeadInput {
 export interface Lead extends LeadInput {
   id: number
   archived: number
+  status: LeadStatus
+  notes: string
   created_at: string
 }
 
 export async function insertLead(lead: LeadInput): Promise<Lead> {
   const result = await db.execute({
     sql: `INSERT INTO leads (name, phone_number, business_name, description)
-          VALUES (:name, :phone_number, :business_name, :description)`,
-    args: lead as unknown as Record<string, InValue>,
+          VALUES (?, ?, ?, ?)`,
+    args: [lead.name, lead.phone_number, lead.business_name, lead.description],
   })
-  return {
-    id: Number(result.lastInsertRowid),
-    ...lead,
-    archived: 0,
-    created_at: new Date().toISOString(),
-  }
+  return { id: Number(result.lastInsertRowid), ...lead, archived: 0, status: "new", notes: "", created_at: new Date().toISOString() }
 }
 
 export async function getAllLeads(): Promise<Lead[]> {
-  const result = await db.execute(
-    `SELECT * FROM leads WHERE archived = 0 ORDER BY created_at DESC`
-  )
+  const result = await db.execute(`SELECT * FROM leads WHERE archived = 0 ORDER BY created_at DESC`)
   return result.rows as unknown as Lead[]
 }
 
 export async function getArchivedLeads(): Promise<Lead[]> {
-  const result = await db.execute(
-    `SELECT * FROM leads WHERE archived = 1 ORDER BY created_at DESC`
-  )
+  const result = await db.execute(`SELECT * FROM leads WHERE archived = 1 ORDER BY created_at DESC`)
   return result.rows as unknown as Lead[]
 }
 
 export async function archiveLead(id: number): Promise<void> {
-  await db.execute({
-    sql: `UPDATE leads SET archived = 1 WHERE id = :id`,
-    args: { id } as unknown as Record<string, InValue>,
-  })
+  await db.execute({ sql: `UPDATE leads SET archived = 1 WHERE id = ?`, args: [id] })
 }
 
 export async function unarchiveLead(id: number): Promise<void> {
-  await db.execute({
-    sql: `UPDATE leads SET archived = 0 WHERE id = :id`,
-    args: { id } as unknown as Record<string, InValue>,
-  })
+  await db.execute({ sql: `UPDATE leads SET archived = 0 WHERE id = ?`, args: [id] })
 }
 
 export async function deleteLead(id: number): Promise<void> {
-  await db.execute({
-    sql: `DELETE FROM leads WHERE id = :id`,
-    args: { id } as unknown as Record<string, InValue>,
-  })
+  await db.execute({ sql: `DELETE FROM leads WHERE id = ?`, args: [id] })
+}
+
+export async function updateLeadStatus(id: number, status: LeadStatus): Promise<void> {
+  await db.execute({ sql: `UPDATE leads SET status = ? WHERE id = ?`, args: [status, id] })
+}
+
+export async function updateLeadNotes(id: number, notes: string): Promise<void> {
+  await db.execute({ sql: `UPDATE leads SET notes = ? WHERE id = ?`, args: [notes, id] })
 }
