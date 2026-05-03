@@ -1,18 +1,24 @@
-import Database from "better-sqlite3"
-import path from "path"
+import { createClient, InValue } from "@libsql/client"
 
-const db = new Database(path.join(process.cwd(), "leads.db"))
+const db = createClient({
+  url: process.env.TURSO_DATABASE_URL!,
+  authToken: process.env.TURSO_AUTH_TOKEN,
+})
 
-db.exec(`
-  CREATE TABLE IF NOT EXISTS leads (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    phone_number TEXT NOT NULL,
-    business_name TEXT NOT NULL,
-    description TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  )
-`)
+const initDb = async () => {
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS leads (
+      id        INTEGER PRIMARY KEY AUTOINCREMENT,
+      name      TEXT NOT NULL,
+      phone_number TEXT NOT NULL,
+      business_name TEXT NOT NULL,
+      description  TEXT NOT NULL,
+      created_at   DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `)
+}
+
+initDb()
 
 interface LeadInput {
   name: string
@@ -26,16 +32,20 @@ interface Lead extends LeadInput {
   created_at: string
 }
 
-export function insertLead(lead: LeadInput): Lead {
-  const stmt = db.prepare(`
-    INSERT INTO leads (name, phone_number, business_name, description)
-    VALUES (@name, @phone_number, @business_name, @description)
-  `)
-  const result = stmt.run(lead)
-  return { id: result.lastInsertRowid as number, ...lead, created_at: new Date().toISOString() }
+export async function insertLead(lead: LeadInput): Promise<Lead> {
+  const result = await db.execute({
+    sql: `INSERT INTO leads (name, phone_number, business_name, description)
+          VALUES (:name, :phone_number, :business_name, :description)`,
+    args: lead as unknown as Record<string, InValue>,
+  })
+  return {
+    id: Number(result.lastInsertRowid),
+    ...lead,
+    created_at: new Date().toISOString(),
+  }
 }
 
-export function getAllLeads(): Lead[] {
-  const stmt = db.prepare(`SELECT * FROM leads ORDER BY created_at DESC`)
-  return stmt.all() as Lead[]
+export async function getAllLeads(): Promise<Lead[]> {
+  const result = await db.execute(`SELECT * FROM leads ORDER BY created_at DESC`)
+  return result.rows as unknown as Lead[]
 }

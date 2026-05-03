@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "All fields are required." }, { status: 400 })
     }
 
-    const lead = insertLead({
+    const lead = await insertLead({
       name,
       phone_number: number,
       business_name: businessName,
@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const leads = getAllLeads()
+    const leads = await getAllLeads()
     return NextResponse.json({ leads }, { status: 200 })
   } catch (err) {
     console.error("API error:", err)
