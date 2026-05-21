@@ -1,11 +1,25 @@
 import { createClient } from "@libsql/client"
 
-const db = createClient({
-  url: process.env.TURSO_DATABASE_URL!,
-  authToken: process.env.TURSO_AUTH_TOKEN,
-})
+let db: ReturnType<typeof createClient> | null = null
+let initPromise: Promise<void> | null = null
+
+function getDb() {
+  if (!process.env.TURSO_DATABASE_URL) {
+    throw new Error("TURSO_DATABASE_URL is required to access leads.")
+  }
+
+  if (!db) {
+    db = createClient({
+      url: process.env.TURSO_DATABASE_URL,
+      authToken: process.env.TURSO_AUTH_TOKEN,
+    })
+  }
+
+  return db
+}
 
 const initDb = async () => {
+  const db = getDb()
   await db.execute(`
     CREATE TABLE IF NOT EXISTS leads (
       id            INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,7 +44,12 @@ const initDb = async () => {
   }
 }
 
-initDb()
+async function ensureDb() {
+  if (!initPromise) {
+    initPromise = initDb()
+  }
+  await initPromise
+}
 
 export type LeadStatus = "new" | "contacted" | "interested" | "converted" | "not_interested"
 
@@ -50,6 +69,8 @@ export interface Lead extends LeadInput {
 }
 
 export async function insertLead(lead: LeadInput): Promise<Lead> {
+  const db = getDb()
+  await ensureDb()
   const result = await db.execute({
     sql: `INSERT INTO leads (name, phone_number, business_name, description)
           VALUES (?, ?, ?, ?)`,
@@ -59,31 +80,45 @@ export async function insertLead(lead: LeadInput): Promise<Lead> {
 }
 
 export async function getAllLeads(): Promise<Lead[]> {
+  const db = getDb()
+  await ensureDb()
   const result = await db.execute(`SELECT * FROM leads WHERE archived = 0 ORDER BY created_at DESC`)
   return result.rows as unknown as Lead[]
 }
 
 export async function getArchivedLeads(): Promise<Lead[]> {
+  const db = getDb()
+  await ensureDb()
   const result = await db.execute(`SELECT * FROM leads WHERE archived = 1 ORDER BY created_at DESC`)
   return result.rows as unknown as Lead[]
 }
 
 export async function archiveLead(id: number): Promise<void> {
+  const db = getDb()
+  await ensureDb()
   await db.execute({ sql: `UPDATE leads SET archived = 1 WHERE id = ?`, args: [id] })
 }
 
 export async function unarchiveLead(id: number): Promise<void> {
+  const db = getDb()
+  await ensureDb()
   await db.execute({ sql: `UPDATE leads SET archived = 0 WHERE id = ?`, args: [id] })
 }
 
 export async function deleteLead(id: number): Promise<void> {
+  const db = getDb()
+  await ensureDb()
   await db.execute({ sql: `DELETE FROM leads WHERE id = ?`, args: [id] })
 }
 
 export async function updateLeadStatus(id: number, status: LeadStatus): Promise<void> {
+  const db = getDb()
+  await ensureDb()
   await db.execute({ sql: `UPDATE leads SET status = ? WHERE id = ?`, args: [status, id] })
 }
 
 export async function updateLeadNotes(id: number, notes: string): Promise<void> {
+  const db = getDb()
+  await ensureDb()
   await db.execute({ sql: `UPDATE leads SET notes = ? WHERE id = ?`, args: [notes, id] })
 }
