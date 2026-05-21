@@ -7,6 +7,8 @@ import { NoNewAppSection } from "@/components/no-new-app-section"
 import { FeaturesSection } from "@/components/features-section"
 import { HowItWorksSection } from "@/components/how-it-works-section"
 import { LiveDemosSection } from "@/components/live-demos-section"
+import { OutcomesSection } from "@/components/outcomes-section"
+import { FAQSection } from "@/components/faq-section"
 import { GetStartedSection } from "@/components/get-started-section"
 import { Footer } from "@/components/footer"
 
@@ -16,18 +18,22 @@ export default function Home() {
       <Header />
       <HeroSection />
       <BuiltForSection />
-      <WhyTeamsSection />
-      <div id="use-cases">
-        <MunshiDadaModesSection />
-      </div>
-      <NoNewAppSection />
-      <div id="features">
-        <FeaturesSection />
-      </div>
       <div id="how-it-works">
         <HowItWorksSection />
       </div>
+      <div id="features">
+        <FeaturesSection />
+      </div>
+      <div id="roles">
+        <MunshiDadaModesSection />
+      </div>
+      <div id="use-cases">
+        <WhyTeamsSection />
+      </div>
+      <NoNewAppSection />
+      <OutcomesSection />
       <LiveDemosSection />
+      <FAQSection />
       <GetStartedSection />
       <Footer />
     </main>

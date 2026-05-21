@@ -1,6 +1,6 @@
 "use client"
 
-import { Megaphone, Users, AlertTriangle, FileText } from "lucide-react"
+import { Factory, HardHat, Pill, Store, Truck, Utensils } from "lucide-react"
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -11,32 +11,46 @@ if (typeof window !== "undefined") {
 
 const features = [
   {
-    icon: Megaphone,
-    title: "Workforce Announcements",
-    description: "Send instructions, updates, and notices to all workers instantly through WhatsApp. Perfect for shift changes, production updates, and daily instructions.",
+    icon: Factory,
+    title: "Manufacturing",
+    description: "Coordinate shift attendance, production tasks, machine issue escalation, inventory checks, and supervisor reports from the floor.",
     accent: "#3B82F6",
     bg: "bg-blue-50",
   },
   {
-    icon: Users,
-    title: "Team Coordination",
-    description: "Supervisors coordinate workers directly through WhatsApp. Assign tasks, share updates, and receive confirmations without phone calls.",
+    icon: Pill,
+    title: "Pharma",
+    description: "Track batch-adjacent operational tasks, vendor follow-ups, dispatch confirmations, audit proof, and daily compliance coordination.",
     accent: "#8B5CF6",
     bg: "bg-violet-50",
   },
   {
-    icon: AlertTriangle,
-    title: "Emergency Alerts",
-    description: "Notify workers immediately during machine breakdowns, safety incidents, or urgent operational changes.",
+    icon: HardHat,
+    title: "Construction",
+    description: "Collect site check-ins, assign work packages, verify photo proof, escalate material delays, and coordinate contractors.",
     accent: "#F59E0B",
     bg: "bg-amber-50",
   },
   {
-    icon: FileText,
-    title: "Automated Workforce Reports",
-    description: "Managers receive daily summaries of attendance, worker activity, and operational updates directly on WhatsApp.",
+    icon: Utensils,
+    title: "Restaurants",
+    description: "Manage staff attendance, prep checklists, stock shortages, purchase approvals, and vendor delivery follow-ups across outlets.",
     accent: "#25D366",
     bg: "bg-green-50",
+  },
+  {
+    icon: Store,
+    title: "Retail",
+    description: "Coordinate store opening tasks, stock replenishment, cashier updates, merchandising checks, and multi-outlet summaries.",
+    accent: "#EF4444",
+    bg: "bg-red-50",
+  },
+  {
+    icon: Truck,
+    title: "Distribution",
+    description: "Follow up on dispatches, collect delivery confirmations, manage payment reminders, and surface bottlenecks across routes.",
+    accent: "#0EA5E9",
+    bg: "bg-sky-50",
   },
 ]
 
@@ -55,16 +69,16 @@ export function WhyTeamsSection() {
     <section ref={sectionRef} className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="why-header text-center mb-16">
-          <p className="text-xs font-bold text-[#25D366] uppercase tracking-widest mb-3">WHY TEAMS USE MUNSHEE</p>
+          <p className="text-xs font-bold text-[#25D366] uppercase tracking-widest mb-3">INDUSTRY USE CASES</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Everything Your Workforce Needs — On WhatsApp
+            Built for operationally intense businesses
           </h2>
           <p className="text-gray-500 max-w-2xl mx-auto text-base leading-relaxed">
-            Managing workers across departments, shifts, and locations becomes easier when communication happens in one place.
+            Munshi fits teams where work moves across people, locations, vendors, and time-sensitive follow-ups.
           </p>
         </div>
 
-        <div className="why-grid grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="why-grid grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {features.map((feature, index) => (
             <div key={index} className="why-card group bg-white rounded-2xl p-7 border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-transparent transition-all duration-300 cursor-default">
               <div className={`w-12 h-12 ${feature.bg} rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110`} style={{ backgroundColor: `${feature.accent}15` }}>

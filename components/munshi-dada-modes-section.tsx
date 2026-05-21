@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
 import { Check } from "lucide-react"
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
@@ -13,24 +12,36 @@ if (typeof window !== "undefined") {
 
 const modes = [
   {
-    badge: "Indoor Operations",
-    title: "Factories & Warehouses",
-    subtitle: "For Customers & Clients",
-    desc: "Manage large worker teams, shifts, and production updates through WhatsApp without manual coordination.",
-    checks: ["Attendance tracking via WhatsApp", "Shift updates & announcements", "Machine breakdown alerts", "Daily workforce summaries"],
+    badge: "Owners",
+    title: "Visibility without daily chasing",
+    subtitle: "Control and decisions",
+    desc: "See what is happening across teams, vendors, and locations before small delays become business problems.",
+    checks: ["Verified operating summaries", "Escalations that need attention", "Multi-location visibility", "Decision-ready updates"],
     image: "/images/team-support.jpg",
-    cta: "Get Access",
-    ctaVariant: "primary" as const,
   },
   {
-    badge: "Distributed Teams",
-    title: "Construction & Field Teams",
-    subtitle: "For Employees & Internal Operations",
-    desc: "Coordinate distributed teams across multiple locations using simple WhatsApp communication.",
-    checks: ["Worker check-ins from job sites", "Task assignments from supervisors", "Safety alerts & notices", "Daily progress coordination"],
+    badge: "Managers",
+    title: "Delegate work and prove execution",
+    subtitle: "Execution and accountability",
+    desc: "Assign tasks, track completion, collect proof, and know exactly where follow-up or escalation is required.",
+    checks: ["Automatic delegation", "Supervisor follow-ups", "Proof collection", "Delay escalation"],
     image: "/images/team-women.jpg",
-    cta: "Contact Us",
-    ctaVariant: "outline" as const,
+  },
+  {
+    badge: "Workers",
+    title: "Respond in the way they already work",
+    subtitle: "Simplicity and familiarity",
+    desc: "Workers do not need a dashboard. They can reply through WhatsApp, voice, image, or simple text.",
+    checks: ["No new app", "Voice-friendly updates", "Image proof", "Zero training friction"],
+    image: "/images/woman-phone.jpg",
+  },
+  {
+    badge: "Vendors",
+    title: "Keep external coordination moving",
+    subtitle: "Communication and responsiveness",
+    desc: "Vendors receive follow-ups, confirmations, and reminders in a format that keeps procurement and delivery moving.",
+    checks: ["Dispatch confirmations", "Delivery coordination", "Payment reminders", "Faster responses"],
+    image: "/images/booking-woman.jpg",
   },
 ]
 
@@ -49,12 +60,12 @@ export function MunshiDadaModesSection() {
     <section ref={sectionRef} className="py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="modes-header text-center mb-16">
-          <p className="text-xs font-bold text-[#25D366] uppercase tracking-widest mb-3">USE CASES</p>
+          <p className="text-xs font-bold text-[#25D366] uppercase tracking-widest mb-3">ROLE-BASED USE CASES</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 max-w-2xl mx-auto leading-tight mb-4">
-            Use Munshee In Two Ways
+            Every operator gets the interface they need
           </h2>
           <p className="text-gray-500 max-w-xl mx-auto text-base">
-            Whether managing customers or internal teams, Munshee adapts to how you already use WhatsApp.
+            Munshi connects leadership, managers, workers, and vendors without forcing everyone into the same software experience.
           </p>
         </div>
 
@@ -86,16 +97,6 @@ export function MunshiDadaModesSection() {
                     </div>
                   ))}
                 </div>
-
-                {mode.ctaVariant === "primary" ? (
-                  <Button className="bg-[#25D366] hover:bg-[#1fba5a] text-white rounded-full px-6 font-bold transition-all duration-200 hover:scale-105">
-                    {mode.cta}
-                  </Button>
-                ) : (
-                  <Button variant="outline" className="rounded-full px-6 font-bold border-gray-200 text-gray-700 hover:border-[#25D366] hover:text-[#25D366] hover:bg-[#25D366]/5 transition-all duration-200">
-                    {mode.cta}
-                  </Button>
-                )}
               </div>
             </div>
           ))}
