@@ -12,21 +12,22 @@ if (typeof window !== "undefined") {
 
 const footerLinks = {
   Sitemap: [
-    { label: "Features", href: "#features" },
     { label: "How It Works", href: "#how-it-works" },
+    { label: "Capabilities", href: "#features" },
     { label: "Use Cases", href: "#use-cases" },
-    { label: "Demo Videos", href: "#demo-videos" },
+    { label: "Demo", href: "#demo" },
   ],
   Industries: [
-    { label: "Factories & Warehouses", href: "#" },
-    { label: "Field & Construction", href: "#" },
-    { label: "Retail", href: "#" },
-    { label: "Service Businesses", href: "#" },
+    { label: "Manufacturing", href: "#use-cases" },
+    { label: "Pharma", href: "#use-cases" },
+    { label: "Construction", href: "#use-cases" },
+    { label: "Retail", href: "#use-cases" },
+    { label: "Distribution", href: "#use-cases" },
   ],
   Legal: [
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "#" },
-    { label: "Contact Us", href: "#" },
+    { label: "Book a Demo", href: "#demo" },
   ],
 }
 
@@ -44,15 +45,15 @@ export function Footer() {
   return (
     <footer ref={footerRef} className="bg-[#0b1410] text-white py-12 sm:py-16 overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
-        {/* Top grid — brand full-width on mobile, then 4 cols on md */}
+        {/* Top grid - brand full-width on mobile, then 4 cols on md */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 mb-10 sm:mb-14">
-          {/* Brand — spans 2 cols on mobile so it's full-width */}
+          {/* Brand - spans 2 cols on mobile so it's full-width */}
           <div className="footer-brand col-span-2 sm:col-span-2 md:col-span-1">
             <Link href="/" className="inline-block mb-4 sm:mb-5">
-              <Image src="/images/logo-full.png" alt="Munshee" width={140} height={34} className="h-8 w-auto" />
+              <Image src="/images/logo-full.png" alt="Munshi" width={140} height={34} className="h-8 w-auto" />
             </Link>
             <p className="text-sm text-gray-500 leading-relaxed max-w-[260px] sm:max-w-[200px] mb-5 sm:mb-6">
-              Run your daily business operations on WhatsApp.
+              Orchestrate workers, managers, vendors, and daily operations through WhatsApp and voice.
             </p>
             <div className="flex gap-2.5">
               <a href="#" className="w-8 h-8 rounded-lg bg-white/6 hover:bg-[#25D366] flex items-center justify-center transition-all duration-200 group">
@@ -86,7 +87,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-white/6 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
-          <p className="text-sm text-gray-600 text-center sm:text-left">© 2025 Munshee. All rights reserved.</p>
+          <p className="text-sm text-gray-600 text-center sm:text-left">(c) 2025 Munshi. All rights reserved.</p>
           <div className="flex gap-4 sm:gap-6">
             <Link href="/privacy" className="text-sm text-gray-600 hover:text-gray-400 transition-colors duration-200">Privacy Policy</Link>
             <Link href="#" className="text-sm text-gray-600 hover:text-gray-400 transition-colors duration-200">Terms of Service</Link>

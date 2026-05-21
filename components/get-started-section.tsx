@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Check, ArrowRight, MessageCircle, Copy } from "lucide-react"
+import { Check, ArrowRight, MessageCircle } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -12,29 +12,21 @@ if (typeof window !== "undefined") {
 }
 
 const checkItems = [
-  "It's like WhatsApp demo",
-  "Deploy your trial assistant in 2hrs",
-  "Book a walkthrough",
+  "Map your daily operations",
+  "See WhatsApp and voice workflows",
+  "Walk through task, vendor, and escalation flows",
 ]
 
 const features = [
-  "Attendance & task tracking",
-  "Expense & hisaab entries",
-  "Issue escalation & alerts",
-  "Daily owner summary report",
+  "Automatic follow-ups",
+  "Proof-based execution",
+  "Vendor coordination",
+  "Verified leadership summaries",
 ]
 
 export function GetStartedSection() {
   const sectionRef = useRef<HTMLElement>(null)
-  const [copied, setCopied] = useState(false)
   const [accessModalOpen, setAccessModalOpen] = useState(false)
-
-  const handleContactUs = () => {
-    navigator.clipboard.writeText("9555105916").then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 3000)
-    })
-  }
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -61,13 +53,13 @@ export function GetStartedSection() {
                 <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                   <MessageCircle className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-xs font-bold text-white/80 uppercase tracking-widest">Live Demos</span>
+                <span className="text-xs font-bold text-white/80 uppercase tracking-widest">Book a Demo</span>
               </div>
               <h2 className="gs-title text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-5 leading-tight">
-                The Best Way To Understand Munshee Is To Try It.
+                Stop chasing operations. Start receiving verified movement.
               </h2>
               <p className="gs-sub text-white/75 mb-6 sm:mb-8 text-sm sm:text-base leading-relaxed">
-                No new app. No extra training. Just WhatsApp — the one your team already uses every day.
+                See how Munshi can coordinate workers, managers, vendors, and daily workflows through the channels your business already uses.
               </p>
               <div className="gs-checks flex flex-col gap-2.5 sm:gap-3 mb-6 sm:mb-8">
                 {checkItems.map((text, i) => (
@@ -84,32 +76,19 @@ export function GetStartedSection() {
                   onClick={() => setAccessModalOpen(true)}
                   className="bg-white text-[#25D366] hover:bg-gray-50 rounded-full px-6 sm:px-7 py-5 sm:py-6 text-sm sm:text-[15px] font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg"
                 >
-                  Try It Now
+                  Book a Demo
                 </Button>
                 <Button
+                  asChild
                   variant="outline"
-                  onClick={handleContactUs}
                   className="rounded-full px-6 sm:px-7 py-5 sm:py-6 text-sm sm:text-[15px] font-semibold border-white/30 text-white hover:bg-white/10 hover:border-white/50 transition-all duration-300 group bg-transparent flex items-center gap-2"
                 >
-                  {copied ? (
-                    <>
-                      <Check className="w-4 h-4" />
-                      Number Copied!
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-4 h-4" />
-                      Contact Us
-                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </>
-                  )}
+                  <a href="#demo">
+                    See Munshi in Action
+                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </a>
                 </Button>
               </div>
-              {copied && (
-                <p className="mt-3 text-white/80 text-sm font-medium">
-                  📋 <span className="font-bold">9555105916</span> copied to clipboard!
-                </p>
-              )}
             </div>
 
             {/* Right - Features grid */}
@@ -123,7 +102,7 @@ export function GetStartedSection() {
                 </div>
               ))}
               <div className="sm:col-span-2 bg-white/10 border border-white/15 rounded-xl px-5 py-4 mt-1">
-                <p className="text-white/70 text-xs text-center">See how it all works — and how businesses interact in the real way.</p>
+                <p className="text-white/70 text-xs text-center">Turn scattered follow-ups into one operating layer your team can actually use.</p>
               </div>
             </div>
           </div>

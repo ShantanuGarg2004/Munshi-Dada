@@ -11,23 +11,28 @@ if (typeof window !== "undefined") {
 const steps = [
   {
     number: "1",
-    title: "Set up your team and workflow",
-    description: "Add your staff, roles, daily tasks, reminders and reporting structure. Takes just a few minutes."
+    title: "Task created naturally",
+    description: "Assign an inventory audit, follow up with a vendor, check attendance, or collect a shift report in plain language.",
   },
   {
     number: "2",
-    title: "Staff respond on WhatsApp",
-    description: "Employees send attendance, updates, issue reports, expenses, stock entries or task completion directly on WhatsApp."
+    title: "Munshi delegates automatically",
+    description: "Munshi routes the work to the right worker, manager, department, or vendor with the context they need.",
   },
   {
     number: "3",
-    title: "Munshee follows up automatically",
-    description: "It reminds people, collects updates, records entries and escalates important issues when needed."
+    title: "Teams respond naturally",
+    description: "People reply through WhatsApp, voice, images, or text. No separate workforce app or dashboard training required.",
   },
   {
     number: "4",
-    title: "Owner gets one clear daily summary",
-    description: "At the end of the day, you get a simple WhatsApp report with what happened, what is pending and what needs action."
+    title: "Munshi verifies execution",
+    description: "Visual proof, proof validation, and accountability checks turn updates into reliable operational records.",
+  },
+  {
+    number: "5",
+    title: "Leadership gets the summary",
+    description: "Owners and managers receive a verified view of what happened, what is delayed, and what needs a decision.",
   },
 ]
 
@@ -43,19 +48,19 @@ export function HowItWorksSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="py-24 bg-gray-50">
+    <section ref={sectionRef} className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="how-header text-center mb-16">
-          <p className="text-xs font-bold text-[#25D366] uppercase tracking-widest mb-3">HOW IT WORKS</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">How Munshee Works</h2>
-          <p className="text-gray-500 max-w-xl mx-auto text-base leading-relaxed">
-            Set up your team → staff send updates on WhatsApp → Munshee follows up automatically → owner gets one daily summary.
+          <p className="text-xs font-bold text-[#25D366] uppercase tracking-widest mb-3">HOW MUNSHI WORKS</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">From instruction to verified summary</h2>
+          <p className="text-gray-500 max-w-2xl mx-auto text-base leading-relaxed">
+            Munshi behaves like an operational coordinator that never forgets who needs to do what, when to follow up, and when to escalate.
           </p>
         </div>
 
-        <div className="how-steps-grid grid sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto relative">
+        <div className="how-steps-grid grid sm:grid-cols-2 lg:grid-cols-5 gap-5 max-w-7xl mx-auto relative">
           {/* Connecting line */}
-          <div className="hidden lg:block absolute top-8 left-[calc(12.5%+28px)] right-[calc(12.5%+28px)] h-0.5 bg-gradient-to-r from-[#25D366]/30 via-[#25D366] to-[#25D366]/30 rounded-full" />
+          <div className="hidden lg:block absolute top-8 left-[calc(10%+28px)] right-[calc(10%+28px)] h-0.5 bg-gradient-to-r from-[#25D366]/30 via-[#25D366] to-[#25D366]/30 rounded-full" />
 
           {steps.map((step, index) => (
             <div key={index} className="how-step group bg-white rounded-2xl p-7 border border-gray-100 shadow-sm text-center relative z-10 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:border-[#25D366]/20">

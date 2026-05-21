@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Copy, Check } from "lucide-react"
+import { ArrowRight, CheckCircle, MessageCircle, Mic } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -13,23 +13,15 @@ if (typeof window !== "undefined") {
 }
 
 const agentBadges = [
-  { label: "Attendance Agent", color: "bg-green-100 text-green-700 border-green-200" },
-  { label: "Support Agent", color: "bg-blue-100 text-blue-700 border-blue-200" },
-  { label: "Reports Agent", color: "bg-amber-100 text-amber-700 border-amber-200" },
+  { label: "Businesses validated", color: "bg-green-100 text-green-700 border-green-200" },
+  { label: "Businesses in active onboarding", color: "bg-blue-100 text-blue-700 border-blue-200" },
+  { label: "Willing-to-pay validation", color: "bg-amber-100 text-amber-700 border-amber-200" },
 ]
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const phoneRef = useRef<HTMLDivElement>(null)
   const [accessModalOpen, setAccessModalOpen] = useState(false)
-  const [copied, setCopied] = useState(false)
-
-  const handleContactUs = () => {
-    navigator.clipboard.writeText("9555105916").then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 3000)
-    })
-  }
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -63,17 +55,17 @@ export function HeroSection() {
             <div>
               <div className="hero-badge inline-flex items-center gap-2 border border-[#25D366]/30 bg-[#25D366]/10 rounded-full px-4 py-1.5 mb-6">
                 <span className="w-1.5 h-1.5 bg-[#25D366] rounded-full animate-pulse" />
-                <span className="text-xs font-semibold text-[#25D366] uppercase tracking-wider">Built for Indian SMEs</span>
+                <span className="text-xs font-semibold text-[#25D366] uppercase tracking-wider">AI operations orchestration</span>
               </div>
 
               <h1 className="hero-title text-[2.2rem] sm:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.08] tracking-tight mb-5">
-                Stop Losing Customers<br />
-                On{" "}
-                <span className="text-[#25D366]">WhatsApp</span>
+                Orchestrate Your Operations<br />
+                Through{" "}
+                <span className="text-[#25D366]">WhatsApp & Voice</span>
               </h1>
 
               <p className="hero-sub text-base sm:text-lg text-white/60 leading-relaxed max-w-[460px] mb-7">
-                AI-assistant that handles attendance, tasks, expenses, issue escalation and daily owner reports — all through WhatsApp. No new app needed.
+                Munshi helps owners and managers assign work, collect updates, verify execution, escalate delays, and coordinate vendors without manually chasing every call, chat, and shift.
               </p>
 
               <div className="hero-cta flex flex-wrap gap-3 mb-8">
@@ -81,33 +73,19 @@ export function HeroSection() {
                   onClick={() => setAccessModalOpen(true)}
                   className="bg-[#25D366] hover:bg-[#1fba5a] text-white rounded-full px-6 sm:px-7 py-5 sm:py-6 text-sm sm:text-[15px] font-bold shadow-lg shadow-[#25D366]/25 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#25D366]/35"
                 >
-                  Get Access
+                  Book a Demo
                 </Button>
                 <Button
+                  asChild
                   variant="outline"
-                  onClick={handleContactUs}
                   className="rounded-full px-6 sm:px-7 py-5 sm:py-6 text-sm sm:text-[15px] font-semibold border-white/20 text-white bg-white/5 hover:bg-white/10 hover:border-white/30 transition-all duration-300 group flex items-center gap-2"
                 >
-                  {copied ? (
-                    <>
-                      <Check className="w-4 h-4 text-[#25D366]" />
-                      <span className="text-[#25D366]">Copied!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-4 h-4" />
-                      Contact Us
-                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </>
-                  )}
+                  <a href="#demo">
+                    See Munshi in Action
+                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </a>
                 </Button>
               </div>
-
-              {copied && (
-                <p className="hero-badges-row text-white/60 text-sm mb-4">
-                  📋 <span className="text-white font-semibold">9555105916</span> copied to clipboard
-                </p>
-              )}
 
               <div className="hero-badges-row flex flex-wrap gap-2">
                 {agentBadges.map((badge, i) => (
@@ -119,13 +97,13 @@ export function HeroSection() {
               </div>
             </div>
 
-            {/* Right — phone visual */}
+            {/* Right - phone visual */}
             <div ref={phoneRef} className="relative flex items-center justify-center mt-4 lg:mt-0">
               <div className="absolute inset-0 bg-[#25D366]/8 rounded-[40px] blur-3xl" />
               <div className="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[480px] mx-auto">
                 <Image
                   src="/images/hero-phone.jpg"
-                  alt="Munshee on WhatsApp"
+                  alt="Munshi on WhatsApp"
                   width={480}
                   height={560}
                   className="mx-auto rounded-[24px] sm:rounded-[28px] shadow-2xl shadow-black/50 ring-1 ring-white/10 w-full"
@@ -138,12 +116,20 @@ export function HeroSection() {
                     </div>
                     <span className="text-[9px] sm:text-[10px] font-semibold text-gray-400 uppercase tracking-wide">Attendance</span>
                   </div>
-                  <p className="text-[10px] sm:text-xs text-gray-700 font-medium">✅ Ramesh — Present, Shift 1</p>
+                  <p className="text-[10px] sm:text-xs text-gray-700 font-medium">OK Ramesh - Present, Shift 1</p>
                 </div>
                 {/* Floating bubble 2 */}
                 <div className="absolute bottom-10 -right-4 sm:bottom-16 sm:-right-10 bg-[#f0fdf4] rounded-2xl shadow-2xl border border-green-100 p-3 sm:p-3.5 max-w-[160px] sm:max-w-[190px]">
-                  <p className="text-[9px] sm:text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-1.5">Daily Summary</p>
-                  <p className="text-[10px] sm:text-xs text-gray-700 font-semibold">42/50 present · 3 pending · ₹1,240</p>
+                  <p className="text-[9px] sm:text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-1.5">Verified Summary</p>
+                  <p className="text-[10px] sm:text-xs text-gray-700 font-semibold">42 present | 6 done | 3 escalated</p>
+                </div>
+                <div className="absolute -bottom-5 left-8 sm:left-12 bg-white rounded-2xl shadow-2xl border border-gray-100 p-3 sm:p-3.5 max-w-[190px] hidden sm:block">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <MessageCircle className="w-4 h-4 text-[#25D366]" />
+                    <Mic className="w-4 h-4 text-[#25D366]" />
+                    <CheckCircle className="w-4 h-4 text-[#25D366]" />
+                  </div>
+                  <p className="text-[10px] sm:text-xs text-gray-700 font-semibold">WhatsApp, voice, proof, follow-up.</p>
                 </div>
               </div>
             </div>

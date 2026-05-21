@@ -1,39 +1,53 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Play, ExternalLink } from "lucide-react"
+import { ArrowRight, CheckCircle2, Play } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { GetAccessModal } from "@/components/get-access-modal"
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-const demos = [
-  {
-    title: "See Munshee manage a factory team",
-    subtitle: "Attendance + Task Tracking Demo",
-    duration: "2:34",
-    thumbnail: "/images/team-support.jpg",
-    videoUrl: "#", // Replace with actual YouTube/Loom embed URL
-    tag: "Factory & Warehouse",
-    tagColor: "bg-green-100 text-green-700",
-  },
-  {
-    title: "Watch Munshee handle customer queries",
-    subtitle: "Customer Support Automation Demo",
-    duration: "1:58",
-    thumbnail: "/images/team-women.jpg",
-    videoUrl: "#", // Replace with actual YouTube/Loom embed URL
-    tag: "Customer Support",
-    tagColor: "bg-blue-100 text-blue-700",
-  },
+const demoHighlights = [
+  "A manager assigns attendance, inventory, and vendor follow-up tasks.",
+  "Workers respond through WhatsApp, voice, image, and text.",
+  "Munshi verifies proof, escalates delays, and sends leadership a summary.",
 ]
+
+const demoEmbed = `
+  <html>
+    <body style="margin:0;background:#071209;color:white;font-family:Inter,Arial,sans-serif;">
+      <div style="height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f1a14,#0d1f11 55%,#071209);">
+        <div style="width:86%;max-width:760px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:22px;color:#25D366;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;">
+            <span style="width:10px;height:10px;border-radius:999px;background:#25D366;display:inline-block;"></span>
+            Munshi operations demo
+          </div>
+          <div style="border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:26px;background:rgba(255,255,255,.06);box-shadow:0 28px 80px rgba(0,0,0,.35);">
+            <div style="display:grid;gap:14px;">
+              <div style="background:white;color:#1f2937;border-radius:18px;padding:16px;font-size:16px;font-weight:700;">Assign inventory audit to Shift A and follow up with packaging vendor.</div>
+              <div style="background:#25D366;color:white;border-radius:18px;padding:16px;font-size:15px;font-weight:700;margin-left:42px;">Munshi delegated 3 tasks, requested photo proof, and scheduled vendor reminder.</div>
+              <div style="background:white;color:#1f2937;border-radius:18px;padding:16px;font-size:15px;font-weight:700;">Team replied with voice note, photo proof, and stock count.</div>
+              <div style="background:#DCFCE7;color:#166534;border-radius:18px;padding:16px;font-size:15px;font-weight:800;">Verified summary: 2 complete, 1 delayed, vendor escalated to manager.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;margin-top:24px;">
+            <div style="width:68px;height:68px;border-radius:999px;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 18px 42px rgba(37,211,102,.28);">
+              <div style="width:0;height:0;border-top:14px solid transparent;border-bottom:14px solid transparent;border-left:21px solid white;margin-left:5px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+  </html>
+`
 
 export function LiveDemosSection() {
   const sectionRef = useRef<HTMLElement>(null)
-  const [playingIndex, setPlayingIndex] = useState<number | null>(null)
+  const [accessModalOpen, setAccessModalOpen] = useState(false)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -53,7 +67,7 @@ export function LiveDemosSection() {
       )
 
       gsap.fromTo(
-        ".demo-card",
+        ".demo-panel",
         { opacity: 0, y: 80, scale: 0.9 },
         {
           opacity: 1,
@@ -74,120 +88,61 @@ export function LiveDemosSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="py-20 bg-white overflow-hidden" id="demo-videos">
+    <>
+    <section ref={sectionRef} className="py-20 sm:py-24 bg-white overflow-hidden" id="demo">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="demos-header text-center mb-16">
           <p className="text-xs font-bold text-[#25D366] uppercase tracking-widest mb-3">
-            DEMO VIDEOS
+            DEMO
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            See Munshee In Action
+            See Munshi Run Your Operations
           </h2>
-          <p className="text-gray-500 max-w-lg mx-auto text-base leading-relaxed">
-            Watch how real businesses use Munshee to automate their daily WhatsApp operations.
+          <p className="text-gray-500 max-w-2xl mx-auto text-base leading-relaxed">
+            Watch the operating flow: assignment, delegation, natural response, proof validation, escalation, and verified leadership summary.
           </p>
         </div>
 
-        <div className="demos-grid grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {demos.map((demo, index) => (
-            <div
-              key={index}
-              className="demo-card bg-gray-50 rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-2 group"
-            >
-              {/* Video thumbnail area */}
-              <div className="relative aspect-video overflow-hidden bg-gray-900">
-                {/* Thumbnail image */}
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                  style={{ backgroundImage: `url(${demo.thumbnail})` }}
-                />
-                {/* Dark overlay */}
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300" />
-
-                {/* Play button */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <button
-                    onClick={() => setPlayingIndex(index)}
-                    className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-[#25D366]"
-                  >
-                    <Play className="w-6 h-6 text-gray-900 group-hover:text-white fill-current ml-1 transition-colors duration-300" />
-                  </button>
-                </div>
-
-                {/* Duration badge */}
-                <div className="absolute bottom-3 right-3 bg-black/70 text-white text-xs font-bold px-2 py-1 rounded-md">
-                  {demo.duration}
-                </div>
-
-                {/* Tag */}
-                <div className="absolute top-3 left-3">
-                  <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${demo.tagColor}`}>
-                    {demo.tag}
-                  </span>
-                </div>
-              </div>
-
-              {/* Card body */}
-              <div className="p-6">
-                <h3 className="font-bold text-gray-900 mb-1 text-base leading-snug group-hover:text-[#25D366] transition-colors duration-300">
-                  {demo.title}
-                </h3>
-                <p className="text-sm text-gray-400 mb-5">{demo.subtitle}</p>
-
-                <Button
-                  onClick={() => setPlayingIndex(index)}
-                  className="bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-full w-full transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-[#25D366]/30 flex items-center gap-2"
-                >
-                  <Play className="w-4 h-4 fill-current" />
-                  Watch Demo Video
-                </Button>
-              </div>
+        <div className="demos-grid grid lg:grid-cols-[1.35fr_0.85fr] gap-8 items-center max-w-6xl mx-auto">
+          <div className="demo-panel bg-gray-950 rounded-3xl overflow-hidden border border-gray-900 shadow-2xl shadow-gray-900/20">
+            <div className="relative aspect-video">
+              <iframe
+                title="Munshi operations demo"
+                srcDoc={demoEmbed}
+                className="absolute inset-0 h-full w-full"
+                loading="lazy"
+              />
             </div>
-          ))}
-        </div>
+          </div>
 
-        <p className="text-center text-sm text-gray-500 mt-8">
-          Want a personalised walkthrough?{" "}
-          <button
-            className="text-[#25D366] font-semibold hover:underline inline-flex items-center gap-1"
-            onClick={() => {
-              navigator.clipboard.writeText("9555105916")
-            }}
-          >
-            Contact us directly <ExternalLink className="w-3 h-3" />
-          </button>
-        </p>
-      </div>
-
-      {/* Video modal */}
-      {playingIndex !== null && (
-        <div
-          className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-          onClick={() => setPlayingIndex(null)}
-        >
-          <div
-            className="relative w-full max-w-3xl bg-black rounded-2xl overflow-hidden shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="aspect-video flex items-center justify-center bg-gray-900">
-              {/* Replace with actual iframe embed when you have video URLs */}
-              <div className="text-center text-white p-10">
-                <div className="w-20 h-20 bg-[#25D366]/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Play className="w-8 h-8 text-[#25D366] fill-current ml-1" />
-                </div>
-                <p className="text-lg font-semibold mb-2">{demos[playingIndex].title}</p>
-                <p className="text-gray-400 text-sm">Video coming soon. Contact us to schedule a live demo!</p>
-              </div>
+          <div className="demo-panel bg-gray-50 rounded-3xl p-6 sm:p-8 border border-gray-100">
+            <div className="w-14 h-14 bg-[#25D366] rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-[#25D366]/25">
+              <Play className="w-6 h-6 text-white fill-current ml-1" />
             </div>
-            <button
-              onClick={() => setPlayingIndex(null)}
-              className="absolute top-4 right-4 w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">A walkthrough of real operating work</h3>
+            <p className="text-gray-500 text-sm leading-relaxed mb-6">
+              The demo focuses on the daily moments that create the most friction: assigning work, collecting reliable updates, coordinating vendors, and knowing what needs escalation.
+            </p>
+            <div className="space-y-3 mb-7">
+              {demoHighlights.map((highlight) => (
+                <div key={highlight} className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-[#25D366] flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-600">{highlight}</span>
+                </div>
+              ))}
+            </div>
+            <Button
+              onClick={() => setAccessModalOpen(true)}
+              className="bg-[#25D366] hover:bg-[#1fba5a] text-white rounded-full px-6 py-5 font-bold transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-[#25D366]/30"
             >
-              ✕
-            </button>
+              Book a Demo
+              <ArrowRight className="w-4 h-4" />
+            </Button>
           </div>
         </div>
-      )}
+      </div>
     </section>
+    <GetAccessModal open={accessModalOpen} onClose={() => setAccessModalOpen(false)} />
+    </>
   )
 }
